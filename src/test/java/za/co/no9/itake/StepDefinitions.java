@@ -1,30 +1,27 @@
 package za.co.no9.itake;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import cucumber.api.java8.En;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
-public class StepDefinitions {
+public class StepDefinitions implements En {
     private Belly belly;
     private int waitingTime;
 
-    @Given("^I have (\\d+) cukes in my belly$")
-    public void i_have_cukes_in_my_belly(int cukes) throws Throwable {
-        belly = new Belly();
-        belly.eat(cukes);
-    }
+    public StepDefinitions() {
+        Given("^I have (\\d+) cukes in my belly$", (Integer cukes) -> {
+            belly = new Belly();
+            belly.eat(cukes);
+        });
 
-    @When("^I wait (\\d+) hour$")
-    public void i_wait_hour(int waitingTime) throws Throwable {
-        this.waitingTime = waitingTime;
-    }
+        When("^I wait (\\d+) hour$", (Integer waitingTime) -> {
+            this.waitingTime = waitingTime;
+        });
 
-    @Then("^my belly should (.*)$")
-    public void my_belly_should_growl(String expectedSound) throws Throwable {
-        String actualSound = belly.getSound(waitingTime);
-        assertThat(actualSound, is(expectedSound));
+        Then("^my belly should (.*)$", (String expectedSound) -> {
+            String actualSound = belly.getSound(waitingTime);
+            assertThat(actualSound, is(expectedSound));
+        });
     }
 }
